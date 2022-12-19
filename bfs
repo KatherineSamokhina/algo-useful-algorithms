@@ -1,0 +1,29 @@
+#include <iostream>
+#include <vector>
+#include <set>
+
+using namespace std;
+
+void DFS(int start, vector<set<int>>& vertices, vector<bool>& visited) {
+    visited[start] = true;
+    cout << start + 1 << " ";
+    for (int to : vertices[start])
+        if (!visited[to])
+            DFS(to, vertices, visited);
+}
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<set<int>> vertices(n);
+    for (int i = 0; i < m; i++) {
+        int from, to;
+        cin >> from >> to;
+        vertices[from - 1].insert(to - 1);
+        vertices[to - 1].insert(from - 1);
+    }
+    vector<bool> visited(n);
+    int start;
+    cin >> start;
+    DFS(start - 1 , vertices, visited);
+    return 0;
+}
