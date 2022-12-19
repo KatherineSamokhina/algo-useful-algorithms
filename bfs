@@ -1,0 +1,41 @@
+#include <iostream>
+#include <vector>
+#include <set>
+#include <queue>
+
+using namespace std;
+
+void BFS(int start, vector<set<int>>& vertices, vector<string>& color) {
+    queue<int> planned;
+    planned.push(start);
+    color[start] = "grey";
+    cout << start + 1 << " ";
+    while (!planned.empty()) {
+        int u = planned.front();
+        planned.pop();
+        for (int v : vertices[u])
+            if (color[v] == "white") {
+                color[v] = "grey";
+                planned.push(v);
+                cout << v + 1 << " ";
+            }
+        color[u] = "black";
+    }
+}
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<set<int>> vertices(n);
+    for (int i = 0; i < m; i++) {
+        int from, to;
+        cin >> from >> to;
+        vertices[from - 1].insert(to - 1);
+        vertices[to - 1].insert(from - 1);
+    }
+    int start;
+    cin >> start;
+    vector<string> color(n, "white");
+    BFS(start - 1, vertices, color);
+    return 0;
+}
