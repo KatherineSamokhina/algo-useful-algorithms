@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+#include <set>
+
+using namespace std;
+
+void DFS(int start, vector<set<int>>& vertices, vector<string>& color, vector<int>& entry, vector<int>& leave, int& time) {
+    time++;
+    entry[start] = time;
+    color[start] = "grey";
+    for (int to : vertices[start])
+        if (color[to] == "white")
+            DFS(to, vertices, color, entry, leave, time);
+    time++;
+    leave[start] = time;
+    color[start] = "black";
+}
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<set<int>> vertices(n);
+    for (int i = 0; i < m; i++) {
+        int from, to;
+        cin >> from >> to;
+        vertices[from - 1].insert(to - 1);
+    }
+    vector<string> color(n, "white");
+    vector<int> entry(n, -1);
+    vector<int> leave(n, -1);
+    int time = -1;
+    DFS(0, vertices, color, entry, leave, time);
+    for (int i = 0; i < n; i++) {
+        cout << entry[i] << " " << leave[i] << endl;
+    }
+    return 0;
+}
